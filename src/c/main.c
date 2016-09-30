@@ -528,19 +528,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
     }
 }
 
-void bluetooth_connection_callback(bool connected) {
-    vibes_long_pulse();
-    
-#ifdef PBL_COLOR
-    if (connected) {
-        window_set_background_color(s_main_window, GColorBlack);
-    }
-    else {
-        window_set_background_color(s_main_window, GColorBlue);
-    }
-#endif
-}
-
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
     // read first item
     Tuple *t = dict_read_first(iterator);
@@ -734,9 +721,6 @@ static void init() {
     // register with TickTimerService
     tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
     
-    // register Bluetooth connection monitoring
-    bluetooth_connection_service_subscribe(bluetooth_connection_callback);
-  
     // register callbacks for AppMessage
     app_message_register_inbox_received(inbox_received_callback);
     app_message_register_inbox_dropped(inbox_dropped_callback);
